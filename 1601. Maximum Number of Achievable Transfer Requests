@@ -1,0 +1,23 @@
+void helper(vector<vector<int>>& requests, int i, int l, int &ans, vector<int> &temp){
+        if(i == requests.size()){
+            for(int ele : temp){
+                if(ele != 0){
+                    return;
+                }
+            }
+            ans = max(ans, l);
+            return;
+        }
+        helper(requests, i + 1, l, ans, temp);
+        temp[requests[i][0]]--;
+        temp[requests[i][1]]++;
+        helper(requests, i + 1, l + 1, ans, temp);
+        temp[requests[i][0]]++;
+        temp[requests[i][1]]--;
+    }
+    int maximumRequests(int n, vector<vector<int>>& requests) {
+        vector<int> temp(n);
+        int ans = 0;
+        helper(requests, 0, 0, ans, temp);
+        return ans;
+    }
