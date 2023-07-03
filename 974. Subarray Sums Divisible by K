@@ -1,0 +1,30 @@
+int subarraysDivByK(vector<int>& nums, int k) {
+        int n = nums.size();
+        int cnt = 0;
+        int sum = 0;
+        unordered_map<int, int> mp;
+        mp[0] = 1;
+
+        for(int i = 0; i < n; i++){
+            sum += nums[i];
+            int rem = (sum % k + k) % k;
+            if(mp.find(rem) != mp.end()){
+                cnt += mp[rem];
+            }
+            mp[rem]++;
+        }
+
+        return cnt;
+    }
+
+Time complexity: O(n)
+Looping through the array once, find, lookup and insert in unordered_map is O(1) in average.
+O(n) * O(1) = O(n)
+
+Space complexity: O(k)
+The possible remainders when divided by k are 0, ...., k - 1.
+So, the map will have to store at max k remainders.
+
+
+Brute force :
+Try all subarrays one by one, and see if they are divisible by k or not. // O(n^3) to O(n^2) time // O(1) space in both cases
