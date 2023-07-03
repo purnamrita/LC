@@ -1,0 +1,24 @@
+bool buddyStrings(string s, string goal) {
+        if(s.size() != goal.size()){
+            return false;
+        }
+        if(s == goal){
+            unordered_set<char> st;
+            for(char ch : s){
+                st.insert(ch);
+            }
+            return st.size() < s.size();
+        }
+        int cnt = 0;
+        vector<int> indices;
+        for(int i = 0; i < s.size(); i++){
+            if(s[i] != goal[i]){
+                cnt++;
+                indices.push_back(i);
+            }
+        }
+        if(cnt != 2){
+            return false;
+        }
+        return s[indices[0]] == goal[indices[1]] && s[indices[1]] == goal[indices[0]];
+    }
