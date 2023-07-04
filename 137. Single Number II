@@ -1,0 +1,44 @@
+Brute:
+int singleNumber(vector<int>& nums) {
+        int n = nums.size();
+        map<int, int> mp;
+
+        for(int i = 0; i < n; i++){
+            mp[nums[i]]++;
+        }
+
+        for(auto it : mp){
+            if(it.second == 1){
+                return it.first;
+            }
+        }
+
+        return -1;
+    }
+Time: O(n) + O(n) = O(2*n) = O(n)
+Space: O(n)
+
+Optimal:
+
+int singleNumber(vector<int>& nums) {
+        int ans = 0;
+        for(int i = 0; i < 32; i++){
+            int cnt0 = 0;
+            int cnt1 = 0;
+            for(int j = 0; j < nums.size(); j++){
+                if(nums[j] & (1 << i)){
+                    cnt1++;
+                }
+                else{
+                    cnt0++;
+                }
+            }
+            if(cnt1 % 3){
+                ans = ans | (1 << i);
+            }
+        }
+        return ans;
+    }
+
+Time: O(n * 32) = O(n)
+Space: O(1)
