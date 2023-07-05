@@ -19,10 +19,10 @@ public:
                     l++;
                 }
             }
-            ans = max(ans, r - l);
+            ans = max(ans, r - l + 1);
             r++;
         }
 
-        return ans;
+        return ans - 1;
     }
 };
