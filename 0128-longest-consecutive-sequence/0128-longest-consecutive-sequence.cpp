@@ -5,24 +5,24 @@ public:
         if(n == 0){
             return 0;
         }
-
-        sort(nums.begin(), nums.end());
-
-        int curr = 1;
-        int ans = 1;
-        int prev = nums[0];
-
-        for(int i = 1; i < n; i++){
-            if(nums[i] == prev + 1){
-                curr++;
-            }
-            else if(nums[i] != prev){
-                curr = 1;
-            }
-            prev = nums[i];
-            ans = max(ans, curr);
+        unordered_set<int> s;
+        for(int ele : nums){
+            s.insert(ele);
         }
-
+        int ans = 1;
+        for(auto ele : s){
+            if(s.find(ele - 1) != s.end()){
+                continue;
+            }
+            else{
+                int curr = 0;
+                while(s.find(ele) != s.end()){
+                    curr++;
+                    ele += 1;
+                }
+                ans = max(ans, curr);
+            }
+        }
         return ans;
     }
 };
