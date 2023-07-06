@@ -21,39 +21,32 @@ class Solution
     public:
     void merge(int arr[], int l, int m, int r)
     {
-         vector<int> temp(r - l + 1);
-         int idx = 0;
-         // First: l to mid
-         // Second: mid + 1 to r
+         // l to mid
+         // mid + 1 to r
          int i = l;
          int j = m + 1;
+         int n = r - l + 1;
+         vector<int> temp;
          
          while(i <= m && j <= r){
              if(arr[i] <= arr[j]){
-                 temp[idx] = arr[i];
-                 idx++;
+                 temp.push_back(arr[i]);
                  i++;
              }
              else{
-                 temp[idx] = arr[j];
-                 idx++;
+                 temp.push_back(arr[j]);
                  j++;
              }
          }
-         
          while(i <= m){
-             temp[idx] = arr[i];
-             idx++;
+             temp.push_back(arr[i]);
              i++;
          }
-         
          while(j <= r){
-             temp[idx] = arr[j];
-             idx++;
+             temp.push_back(arr[j]);
              j++;
          }
          
-         int n = r - l + 1;
          for(int i = 0; i < n; i++){
              arr[l + i] = temp[i];
          }
@@ -65,7 +58,7 @@ class Solution
             int mid = l + (r - l) / 2;
             mergeSort(arr, l, mid);
             mergeSort(arr, mid + 1, r);
-            merge(arr, l, mid, r);
+            merge(arr, l, mid, r);;
         }
     }
 };
