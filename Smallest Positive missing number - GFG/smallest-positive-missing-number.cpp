@@ -11,21 +11,25 @@ class Solution
     //Function to find the smallest positive number missing from the array.
     int missingNumber(int arr[], int n) 
     { 
-        unordered_set<int> s;
-        
         for(int i = 0; i < n; i++){
-            s.insert(arr[i]);
-        }
-        
-        for(int i = 1; i <= n; i++){
-            if(s.find(i) == s.end()){
-                return i;
+            int ele = arr[i];
+            int chair = ele - 1;
+            
+            if(ele >= 1 && ele <= n){
+                if(arr[chair] != ele){
+                    swap(arr[chair], arr[i]);
+                    i--;
+                }
             }
         }
         
+        for(int i = 0; i < n; i++){
+            if(arr[i] != i + 1){
+                return i + 1;
+            }
+        }
         return n + 1;
     } 
-    
 };
 
 //{ Driver Code Starts.
