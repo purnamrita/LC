@@ -4,7 +4,9 @@ public:
         int n = s.length();
         string ans = "";
         for(int i = 0; i < n; i++){
-            s[i] = tolower(s[i]);;
+            if(s[i] >= 'A' && s[i] <= 'Z'){
+                s[i] = s[i] - 'A' + 'a';
+            }
         }
         return s;
     }
