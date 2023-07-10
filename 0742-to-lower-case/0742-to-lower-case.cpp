@@ -4,8 +4,8 @@ public:
         int n = s.length();
         string ans = "";
         for(int i = 0; i < n; i++){
-            ans += tolower(s[i]);;
+            s[i] = tolower(s[i]);;
         }
-        return ans;
+        return s;
     }
 };
