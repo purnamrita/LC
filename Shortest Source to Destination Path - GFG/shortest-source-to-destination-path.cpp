@@ -13,13 +13,15 @@ class Solution {
         vector<vector<int>> vis(N, vector<int>(M, 0));
         int delRow[] = {-1, 0, 1, 0};
         int delCol[] = {0, 1, 0, -1};
-        int steps = 0;
         queue<pair<int, int>> q;
         q.push({0, 0});
         vis[0][0] = 1;
         
+        int steps = 0;
+        
         while(!q.empty()){
             int size = q.size();
+            
             while(size--){
                 int row = q.front().first;
                 int col = q.front().second;
@@ -28,7 +30,6 @@ class Solution {
                 if(row == X && col == Y){
                     return steps;
                 }
-                
                 for(int i = 0; i < 4; i++){
                     int nrow = row + delRow[i];
                     int ncol = col + delCol[i];
@@ -40,10 +41,10 @@ class Solution {
                 }
             }
             steps++;
-            
         }
         
         return -1;
+        
     }
 };
 
