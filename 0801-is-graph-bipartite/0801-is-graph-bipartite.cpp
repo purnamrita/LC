@@ -1,11 +1,11 @@
 class Solution {
 public:
-    bool checkBipartite(int start, int col, vector<int> &color, vector<vector<int>>& graph){
-        color[start] = col;
+    bool dfs(int src, int col, vector<vector<int>>& graph, vector<int> &color){
+        color[src] = col;
 
-        for(auto it : graph[start]){
+        for(auto it : graph[src]){
             if(color[it] == -1){
-                if(checkBipartite(it, !col, color, graph) == false){
+                if(dfs(it, !col, graph, color) == false){
                     return false;
                 }
             }
@@ -17,14 +17,13 @@ public:
         }
         return true;
     }
-
     bool isBipartite(vector<vector<int>>& graph) {
         int n = graph.size();
         vector<int> color(n, -1);
 
         for(int i = 0; i < n; i++){
             if(color[i] == -1){
-                if(checkBipartite(i, 0, color, graph) == false){
+                if(dfs(i, 0, graph, color) == false){
                     return false;
                 }
             }
