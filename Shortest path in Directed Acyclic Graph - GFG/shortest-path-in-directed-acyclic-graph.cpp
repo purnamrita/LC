@@ -8,56 +8,61 @@ using namespace std;
 // User function Template for C++
 class Solution {
   private:
-        void dfs_topo_sort(int node, vector<pair<int, int>> adj[], int vis[], stack<int> &st){
-            vis[node] = 1;
-            for(auto it : adj[node]){
-                if(!vis[it.first]){
-                    dfs_topo_sort(it.first, adj, vis, st);
-                }
+    void topoSort(int src, vector<pair<int, int>> adj[], stack<int> &st, vector<int> &vis){
+        vis[src] = 1;
+        
+        for(auto it : adj[src]){
+            if(!vis[it.first]){
+                topoSort(it.first, adj, st, vis);
             }
-            st.push(node);
         }
+        
+        st.push(src);
+        
+    }
+    
   public:
      vector<int> shortestPath(int N,int M, vector<vector<int>>& edges){
+        
         vector<pair<int, int>> adj[N];
         
         for(int i = 0; i < M; i++){
             int u = edges[i][0];
             int v = edges[i][1];
             int wt = edges[i][2];
+            
             adj[u].push_back({v, wt});
         }
         
-        int vis[N] = {0};
+        vector<int> vis(N);
         stack<int> st;
         
         for(int i = 0; i < N; i++){
             if(!vis[i]){
-                dfs_topo_sort(i, adj, vis, st);
+                topoSort(i, adj, st, vis);
             }
         }
         
-        vector<int> dist(N);
-        for(int i = 0; i < N; i++){
-            dist[i] = 1e9;
-        }
+        vector<int> dist(N, INT_MAX);
         dist[0] = 0;
         
         while(!st.empty()){
-            int u = st.top();
+            int node = st.top();
             st.pop();
-            for(auto it : adj[u]){
-                int v = it.first;
+            int curr_dist = dist[node];
+            
+            for(auto it : adj[node]){
+                int neigh = it.first;
                 int wt = it.second;
                 
-                if(dist[u] + wt < dist[v]){
-                    dist[v] = dist[u] + wt;
+                if(curr_dist != INT_MAX && curr_dist + wt < dist[neigh]){
+                    dist[neigh] = curr_dist + wt;
                 }
             }
         }
         
         for(int i = 0; i < N; i++){
-            if(dist[i] == 1e9){
+            if(dist[i] == INT_MAX){
                 dist[i] = -1;
             }
         }
@@ -65,6 +70,7 @@ class Solution {
         return dist;
     }
 };
+
 
 //{ Driver Code Starts.
 int main() {
