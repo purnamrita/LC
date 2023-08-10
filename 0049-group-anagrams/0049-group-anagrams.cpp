@@ -1,14 +1,19 @@
 class Solution {
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
-        map<vector<int>, vector<string>> mp;
+        map<vector<int>, vector<string> > mp;
 
-        for(auto str : strs){
-            vector<int> cnt(26);
-            for(auto ch : str){
-                cnt[ch - 'a']++;
+        int n = strs.size();
+
+        for(int i = 0; i < n; i++){
+            string s = strs[i];
+            vector<int> key(26);
+
+            for(char ch : s){
+                key[ch - 'a']++;
             }
-            mp[cnt].push_back(str);
+
+            mp[key].push_back(s);
         }
 
         vector<vector<string>> ans;
@@ -16,7 +21,6 @@ public:
         for(auto it : mp){
             ans.push_back(it.second);
         }
-
         return ans;
     }
 };
