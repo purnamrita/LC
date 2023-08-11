@@ -1,45 +1,38 @@
 class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
-        int n = nums.size();
         sort(nums.begin(), nums.end());
-        vector<vector<int>> ans;
+        set<vector<int>> s;
+        int n = nums.size();
 
         for(int i = 0; i < n; i++){
-            if(i > 0 && nums[i] == nums[i - 1]){
-                continue;
-            }
-            int target = -(nums[i]);
-            int lo = i + 1;
-            int hi = n - 1;
+            int l = i + 1;
+            int r = n - 1;
+            int target = -nums[i];
 
-            while(lo < hi){
-                if(nums[lo] + nums[hi] == target){
-                    vector<int> temp = {nums[i], nums[lo], nums[hi]};
+            while(l < r){
+                int sum = nums[l] + nums[r];
+
+                if(sum == target){
+                    vector<int> temp = {nums[i], nums[l], nums[r]};
                     sort(temp.begin(), temp.end());
-                    ans.push_back(temp);
-                    lo++;
-                    while(lo < hi && nums[lo] == nums[lo - 1]){
-                        lo++;
-                    }
-                    hi--;
-                    while(lo < hi && nums[hi] == nums[hi + 1]){
-                        hi--;
-                    }
+                    s.insert(temp);
+                    l++;
+                    r--;
                 }
-                else if(nums[lo] + nums[hi] < target){
-                    lo++;
-                    while(lo < hi && nums[lo] == nums[lo - 1]){
-                        lo++;
-                    }
+                else if(sum < target){
+                    l++;
                 }
                 else{
-                    hi--;
-                    while(lo < hi && nums[hi] == nums[hi + 1]){
-                        hi--;
-                    }
+                    r--;
                 }
             }
+        }
+
+        vector<vector<int>> ans;
+
+        for(auto v : s){
+            ans.push_back(v);
         }
 
         return ans;
