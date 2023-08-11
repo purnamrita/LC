@@ -1,29 +1,31 @@
 class Solution {
 public:
     bool isValidSudoku(vector<vector<char>>& board) {
-        map<int, vector<char> > row;
-        map<int, vector<char> > col;
+        int n = board.size();
+        int m = board[0].size();
 
-        map<pair<int, int>, vector<char>> square;
+        map<int, unordered_set<char>> rmap;
+        map<int, unordered_set<char>> cmap;
+        map<pair<int, int>, unordered_set<char>> cblock;
 
-        for(int i = 0; i < 9; i++){
-            for(int j = 0; j < 9; j++){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
                 char ele = board[i][j];
                 if(ele == '.'){
                     continue;
                 }
-                if(
-                    (find(row[i].begin(), row[i].end(), ele) != row[i].end()) ||
-                    (find(col[j].begin(), col[j].end(), ele) != col[j].end()) ||
-                    (find(square[{i/3, j/3}].begin(), square[{i/3, j/3}].end(), ele) != square[{i/3, j/3}].end())
-                    
-                ){
-                    return false;
+                else{
+                    if(rmap[i].find(ele) != rmap[i].end() ||
+                        cmap[j].find(ele) != cmap[j].end() ||
+                        cblock[{i/3, j/3}].find(ele) != cblock[{i/3, j/3}].end()
+                    )
+                    {
+                        return false;
+                    }
+                    rmap[i].insert(ele);
+                    cmap[j].insert(ele);
+                    cblock[{i/3, j/3}].insert(ele);
                 }
-
-                row[i].push_back(ele);
-                col[j].push_back(ele);
-                square[{i / 3, j / 3}].push_back(ele);
             }
         }
 
