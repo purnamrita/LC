@@ -10,29 +10,31 @@ using namespace std;
 class Solution{
   public:
     int longestKSubstr(string s, int k) {
-        int ans = -1;
-        int chars = 0;
         unordered_map<char, int> mp;
-        int i = 0;
-        for(int j = 0; j < s.length(); j++){
-            mp[s[j]]++;
+        int start = 0;
+        int end = 0;
+        int ans = -1;
+        
+        while(end < s.size()){
+            mp[s[end]]++;
             if(mp.size() < k){
-                continue;
             }
             else if(mp.size() == k){
-                ans = max(ans, j - i + 1);
+                ans = max(ans, end - start + 1);
             }
             else{
                 while(mp.size() > k){
-                    mp[s[i]]--;
-                    if(mp[s[i]] == 0){
-                        mp.erase(s[i]);
+                    mp[s[start]]--;
+                    if(mp[s[start]] == 0){
+                        mp.erase(s[start]);
                     }
-                    i++;
+                    start++;
                 }
-                ans = max(ans, j - i + 1);
+                ans = max(ans, end - start + 1);
             }
+            end++;
         }
+        
         return ans;
     }
 };
