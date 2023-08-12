@@ -10,12 +10,12 @@ class Solution{
 public:
 	int search(string pat, string txt) {
 	    int cnt = 0;
-	    unordered_map<int, int> pmap;
+	    map<int, int> pmap;
 	    for(char ch : pat){
 	        pmap[ch]++;
 	    }
 	    
-	    unordered_map<int, int> tmap;
+	    map<int, int> tmap;
 	    for(int i = 0; i < pat.size() - 1; i++){
 	        tmap[txt[i]]++;
 	    }
