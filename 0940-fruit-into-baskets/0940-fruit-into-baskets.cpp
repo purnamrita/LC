@@ -1,28 +1,27 @@
 class Solution {
 public:
     int totalFruit(vector<int>& fruits) {
-        // find longest consecutive subarray having atmost 2 distinct elements
+        int n = fruits.size();
         int ans = 0;
+        int s = 0;
+        int e = 0;
         unordered_map<int, int> mp;
-        int start = 0;
-        int end = 0;
-        while(end < fruits.size()){
-            mp[fruits[end]]++;
-            if(mp.size() <= 2){
-                ans = max(ans, end - start + 1);
-            }
-            else{
+
+        while(e < n){
+            mp[fruits[e]]++;
+            if(mp.size() > 2){
                 while(mp.size() > 2){
-                    mp[fruits[start]]--;
-                    if(mp[fruits[start]] == 0){
-                        mp.erase(fruits[start]);
+                    mp[fruits[s]]--;
+                    if(mp[fruits[s]] == 0){
+                        mp.erase(fruits[s]);
                     }
-                    start++;
+                    s++;
                 }
-                ans = max(ans, end - start + 1);
             }
-            end++;
+            ans = max(ans, e - s + 1);
+            e++;
         }
+
         return ans;
     }
 };
