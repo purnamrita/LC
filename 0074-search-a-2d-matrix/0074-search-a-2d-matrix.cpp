@@ -24,7 +24,6 @@ public:
                 if(bs(matrix[i], 0, n - 1, target) == true){
                     return true;
                 }
-                break;
             }
         }
 
