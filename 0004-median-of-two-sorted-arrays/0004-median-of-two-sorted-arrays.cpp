@@ -6,32 +6,50 @@ public:
         int n = n1 + n2;
         int ptr1 = 0;
         int ptr2 = 0;
-        vector<int> nums;
+        int idx1 = n / 2;
+        int idx2 = idx1 - 1;
+        int ele1 = INT_MAX;
+        int ele2 = INT_MAX;
+        int cnt = 0;
 
         while(ptr1 < n1 && ptr2 < n2){
             if(nums1[ptr1] <= nums2[ptr2]){
-                nums.push_back(nums1[ptr1]);
+                if(cnt == idx1){ele1 = nums1[ptr1];}
+                if(cnt == idx2){ele2 = nums1[ptr1];}
                 ptr1++;
+                cnt++;
             }
             else{
-                nums.push_back(nums2[ptr2]);
+                if(cnt == idx1){ele1 = nums2[ptr2];}
+                if(cnt == idx2){ele2 = nums2[ptr2];}
                 ptr2++;
+                cnt++;
+            }
+            if(ele1 != INT_MAX && ele2 != INT_MAX){
+                break;
             }
         }
         while(ptr1 < n1){
-            nums.push_back(nums1[ptr1]);
+            if(cnt == idx1){ele1 = nums1[ptr1];}
+            if(cnt == idx2){ele2 = nums1[ptr1];}
             ptr1++;
+            cnt++;
+            if(ele1 != INT_MAX && ele2 != INT_MAX){
+                break;
+            }
         }
         while(ptr2 < n2){
-            nums.push_back(nums2[ptr2]);
+            if(cnt == idx1){ele1 = nums2[ptr2];}
+            if(cnt == idx2){ele2 = nums2[ptr2];}
             ptr2++;
+            cnt++;
+            if(ele1 != INT_MAX && ele2 != INT_MAX){
+                break;
+            }
         }
-
-        int sum = 0;
         if(n % 2){
-            return nums[n / 2];
+            return ele1;
         }
-        sum += (double)(nums[n / 2] + nums[n / 2 - 1]);
-        return sum / 2.0;
+        return ((double)ele1 + (double)ele2) / 2.0;
     }
 };
