@@ -1,25 +1,30 @@
 class Solution {
 public:
+    bool bs(vector<int> v, int l, int h, int target){
+        while(l <= h){
+            int m = l + (h - l) / 2;
+            if(v[m] == target){
+                return true;
+            }
+            else if(v[m] > target){
+                h = m - 1;
+            }
+            else{
+                l = m + 1;
+            }
+        }
+        return false;
+    }
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
         int m = matrix.size();
         int n = matrix[0].size();
-        int N = m * n;
 
-        int low = 0;
-        int high = N - 1;
-
-        while(low <= high){
-            int mid = low + (high - low) / 2;
-            int r = mid / n;
-            int c = mid % n;
-            if(matrix[r][c] == target){
-                return true;
-            }
-            else if(matrix[r][c] > target){
-                high = mid - 1;
-            }
-            else{
-                low = mid + 1;
+        for(int i = 0; i < m; i++){
+            if(matrix[i][0] <= target && target <= matrix[i][n - 1]){
+                if(bs(matrix[i], 0, n - 1, target) == true){
+                    return true;
+                }
+                break;
             }
         }
 
