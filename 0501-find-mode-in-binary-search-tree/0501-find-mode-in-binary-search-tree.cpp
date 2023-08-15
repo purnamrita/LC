@@ -11,24 +11,20 @@
  */
 class Solution {
 public:
-    void preorder(TreeNode* root, map<int, int> &mp){
+    void preorder(TreeNode* root, map<int, int> &mp, int &maxi){
         if(root == NULL){
             return;
         }
         mp[root -> val]++;
-        preorder(root -> left, mp);
-        preorder(root -> right, mp);
+        maxi = max(maxi, mp[root -> val]);
+        preorder(root -> left, mp, maxi);
+        preorder(root -> right, mp, maxi);
     }
     vector<int> findMode(TreeNode* root) {
         vector<int> ans;
         map<int, int> mp;
         int maxi = 0;
-        preorder(root, mp);
-        for(auto it : mp){
-            int num = it.first;
-            int cnt = it.second;
-            maxi = max(maxi, cnt);
-        }
+        preorder(root, mp, maxi);
         for(auto it : mp){
             if(it.second == maxi){
                 ans.push_back(it.first);
