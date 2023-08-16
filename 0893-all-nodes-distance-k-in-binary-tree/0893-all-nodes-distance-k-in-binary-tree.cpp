@@ -9,63 +9,70 @@
  */
 class Solution {
 public:
-    void parent_arr_formation(TreeNode* root, unordered_map<TreeNode*, TreeNode*> &parent){
+    void makeParentFindTarget(TreeNode* root, TreeNode* target, TreeNode* &startNode, unordered_map<TreeNode*, TreeNode*> &mparent){
         queue<TreeNode*> q;
         q.push(root);
 
         while(!q.empty()){
             TreeNode* curr = q.front();
             q.pop();
+            if(curr == target){
+                startNode = curr;
+            }
             if(curr -> left){
-                parent.insert({curr -> left, curr});
+                mparent[curr -> left] = curr;
                 q.push(curr -> left);
             }
             if(curr -> right){
-                parent.insert({curr -> right, curr});
+                mparent[curr -> right] = curr;
                 q.push(curr -> right);
             }
         }
     }
 
-    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        unordered_map<TreeNode*, TreeNode*> parent;
-        parent_arr_formation(root, parent);
-        unordered_map<TreeNode*, bool> visited;
-        visited[target] = true;
-
-        int dist = 0;
+    void findNodesAtDistK(TreeNode* startNode, int k, vector<int> &ans, unordered_map<TreeNode*, TreeNode*> &mparent, unordered_map<TreeNode*, bool> &vis){
+        int curr = 0;
         queue<TreeNode*> q;
-        q.push(target);
+        q.push(startNode);
+        vis[startNode] = 1;
+
         while(!q.empty()){
-            if(dist == k){
+            if(curr == k){
                 break;
             }
-            dist++;
-            int n = q.size();
-            for(int i = 0; i < n; i++){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
                 TreeNode* curr = q.front();
                 q.pop();
-                if(curr -> left && !visited[curr -> left]){
-                    visited[curr -> left] = 1;
+                if(curr -> left && vis[curr -> left] == 0){
+                    vis[curr -> left] = 1;
                     q.push(curr -> left);
                 }
-                if(curr -> right && !visited[curr -> right]){
-                    visited[curr -> right] = 1;
+                if(curr -> right && vis[curr -> right] == 0){
+                    vis[curr -> right] = 1;
                     q.push(curr -> right);
                 }
-                if(parent[curr] && !visited[parent[curr]]){
-                    visited[parent[curr]] = 1;
-                    q.push(parent[curr]);
+                if(mparent[curr] && vis[mparent[curr]] == 0){
+                    vis[mparent[curr]] = 1;
+                    q.push(mparent[curr]);
                 }
             }
+            curr++;
         }
 
-        vector<int> ans;
         while(!q.empty()){
-            TreeNode* curr = q.front();
+            ans.push_back(q.front() -> val);
             q.pop();
-            ans.push_back(curr -> val);
         }
+    }
+
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        vector<int> ans;
+        TreeNode* startNode;
+        unordered_map<TreeNode*, TreeNode*> mparent;
+        unordered_map<TreeNode*, bool> vis;
+        makeParentFindTarget(root, target, startNode, mparent);
+        findNodesAtDistK(startNode, k, ans, mparent, vis);
         return ans;
     }
 };
