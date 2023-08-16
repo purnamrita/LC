@@ -11,69 +11,63 @@
  */
 class Solution {
 public:
-    TreeNode* create_parent_mapping_and_find_start_node(TreeNode* root, map<TreeNode*, TreeNode*> &parent, int start){
+    void makeParentFindStart(TreeNode* root, int start, TreeNode* &startNode, unordered_map<TreeNode*, TreeNode*> &mparent){
         queue<TreeNode*> q;
         q.push(root);
-        TreeNode* res;
 
         while(!q.empty()){
             TreeNode* curr = q.front();
             q.pop();
             if(curr -> val == start){
-                res = curr;
+                startNode = curr;
             }
-
             if(curr -> left){
-                parent[curr -> left] = curr;
+                mparent[curr -> left] = curr;
                 q.push(curr -> left);
             }
             if(curr -> right){
-                parent[curr -> right] = curr;
+                mparent[curr -> right] = curr;
                 q.push(curr -> right);
             }
         }
-        return res;
     }
-    int amountOfTime(TreeNode* root, int start) {
-        map<TreeNode*, TreeNode*> parent; // (node, parent)
-        TreeNode* start_node = create_parent_mapping_and_find_start_node(root, parent, start);
-        int time = 0;
-        map<TreeNode*, bool> visited;
-        visited[start_node] = 1;
 
+    void timeTaken(TreeNode* startNode, unordered_map<TreeNode*, TreeNode*> &mparent, int &time, unordered_map<TreeNode*, bool> &vis){
         queue<TreeNode*> q;
-        q.push(start_node);
+        q.push(startNode);
+        vis[startNode] = 1;
 
         while(!q.empty()){
-            int flag = 0;
-            int n = q.size();
+            int qsize = q.size();
 
-            for(int i = 0; i < n; i++){
+            for(int i = 0; i < qsize; i++){
                 TreeNode* curr = q.front();
                 q.pop();
-                if(curr -> left && !visited[curr -> left]){
-                    visited[curr -> left] = 1;
+                if(curr -> left && !vis[curr -> left]){
+                    vis[curr -> left] = 1;
                     q.push(curr -> left);
-                    flag = 1;
                 }
-                if(curr -> right && !visited[curr -> right]){
-                    visited[curr -> right] = 1;
+                if(curr -> right && !vis[curr -> right]){
+                    vis[curr -> right] = 1;
                     q.push(curr -> right);
-                    flag = 1;
                 }
-                if(parent.find(curr)!=parent.end() && !visited[parent[curr]]){
-                    visited[parent[curr]] = 1;
-                    q.push(parent[curr]);
-                    flag = 1;
+                if(mparent[curr] && !vis[mparent[curr]]){
+                    vis[mparent[curr]] = 1;
+                    q.push(mparent[curr]);
                 }
             }
 
-            if(flag){
-                time++;
-            }
-
+            time++;
         }
+    }
 
-        return time;
+    int amountOfTime(TreeNode* root, int start) {
+        int time = 0;
+        TreeNode* startNode = NULL;
+        unordered_map<TreeNode*, TreeNode*> mparent;
+        unordered_map<TreeNode*, bool> vis;
+        makeParentFindStart(root, start, startNode, mparent);
+        timeTaken(startNode, mparent, time, vis);
+        return time - 1;
     }
 };
