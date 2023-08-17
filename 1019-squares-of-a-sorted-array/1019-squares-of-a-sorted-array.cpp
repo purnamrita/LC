@@ -9,13 +9,13 @@ public:
         int high = n - 1;
 
         while(low <= high){
-            if(abs(nums[low]) <= abs(nums[high])){
-                ans[idx] = nums[high] * nums[high];
-                high--;
-            }
-            else{
+            if(abs(nums[low]) >= abs(nums[high])){
                 ans[idx] = nums[low] * nums[low];
                 low++;
+            }
+            else{
+                ans[idx] = nums[high] * nums[high];
+                high--;
             }
             idx--;
         }
