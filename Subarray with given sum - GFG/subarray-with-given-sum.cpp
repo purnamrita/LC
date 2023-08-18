@@ -19,19 +19,15 @@ class Solution
         
         while(r < n){
             sum += arr[r];
-            if(sum > s){
-                while(sum > s){
-                    sum -= arr[l];
-                    l++;
-                }
+            while(sum > s && l <= r){
+                sum -= arr[l];
+                l++;
             }
             if(sum == s){
-                
                 return {l + 1, r + 1};
             }
             r++;
         }
-        
         return {-1};
     }
 };
