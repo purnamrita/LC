@@ -11,33 +11,19 @@
  */
 class Solution {
 public:
-    void inorder(TreeNode* root, vector<int> &arr){
+    bool dfs(TreeNode* root, unordered_set<int> &s, int k){
         if(root == NULL){
-            return;
+            return false;
         }
-        inorder(root -> left, arr);
-        arr.push_back(root -> val);
-        inorder(root -> right, arr);
+        int target = k - root -> val;
+        if(s.find(target) != s.end()){
+            return true;
+        }
+        s.insert(root -> val);
+        return dfs(root -> left, s, k) || dfs(root -> right, s, k);
     }
     bool findTarget(TreeNode* root, int k) {
-        vector<int> arr;
-        inorder(root, arr);
-        int l = 0;
-        int r = arr.size() - 1;
-
-        while(l < r){
-            int sum = arr[l] + arr[r];
-            if(sum == k){
-                return true;
-            }
-            else if(sum > k){
-                r--;
-            }
-            else{
-                l++;
-            }
-        }
-
-        return false;
+        unordered_set<int> s;
+        return dfs(root, s, k);
     }
 };
