@@ -9,28 +9,31 @@ public:
             }
         }
     }
+
     int findCircleNum(vector<vector<int>>& isConnected) {
-        int V = isConnected.size();
-        vector<int> adj[V + 1];
+        int n = isConnected.size();
 
-        vector<int> vis(V + 1);
+        vector<int> adj[n];
 
-        for(int i = 1; i <= V; i++){
-            for(int j = 1; j <= V; j++){
-                if(isConnected[i - 1][j - 1] == 1 && i != j){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                if(i != j && isConnected[i][j] == 1){
                     adj[i].push_back(j);
                 }
             }
         }
 
-        int cnt = 0;
-        for(int i = 1; i <= V; i++){
+        vector<int> vis(n);
+
+        int provinces = 0;
+
+        for(int i = 0; i < n; i++){
             if(!vis[i]){
                 dfs(i, adj, vis);
-                cnt++;
+                provinces++;
             }
         }
 
-        return cnt;
+        return provinces;
     }
 };
