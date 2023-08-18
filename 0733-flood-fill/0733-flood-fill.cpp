@@ -1,33 +1,38 @@
 class Solution {
 public:
+    bool checkBounds(int x, int y, int rows, int cols){
+        return (x >= 0 && x < rows && y >= 0 && y < cols);
+    }
+
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
-        int n = image.size();
-        int m = image[0].size();
-        vector<vector<int>> vis(n, vector<int>(m, 0));
-        int oriCol = image[sr][sc];
+        int m = image.size();
+        int n = image[0].size();
+        int ori = image[sr][sc];
         vector<vector<int>> ans = image;
+
+        int delRow[] = {-1, 0, 1, 0};
+        int delCol[] = {0, 1, 0, -1};
+
+        vector<vector<int>> vis(m, vector<int>(n, 0));
 
         queue<pair<int, int>> q;
         q.push({sr, sc});
         vis[sr][sc] = 1;
         ans[sr][sc] = color;
 
-        int delRow[] = {-1, 0, 1, 0};
-        int delCol[] = {0, 1, 0, -1};
-
         while(!q.empty()){
-            auto it = q.front();
+            auto node = q.front();
             q.pop();
-            int row = it.first;
-            int col = it.second;
-            
+            int x = node.first;
+            int y = node.second;
+
             for(int i = 0; i < 4; i++){
-                int nrow = row + delRow[i];
-                int ncol = col + delCol[i];
-                if(nrow >= 0 && nrow < n && ncol >= 0 && ncol < m && image[nrow][ncol] == oriCol && vis[nrow][ncol] == 0){
-                    ans[nrow][ncol] = color;
-                    vis[nrow][ncol] = 1;
-                    q.push({nrow, ncol});
+                int newr = x + delRow[i];
+                int newc = y + delCol[i];
+                if(checkBounds(newr, newc, m, n) && !vis[newr][newc] && ans[newr][newc] == ori){
+                    ans[newr][newc] = color;
+                    q.push({newr, newc});
+                    vis[newr][newc] = 1;
                 }
             }
         }
