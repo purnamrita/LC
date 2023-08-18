@@ -11,22 +11,48 @@
  */
 class Solution {
 public:
-    void inorder(TreeNode* root, multiset<int> &mp){
+    void preorder(TreeNode* root, vector<int> &v){
         if(root == NULL){
             return;
         }
-        inorder(root -> left, mp);
-        mp.insert(root -> val);
-        inorder(root -> right, mp);
+        preorder(root -> left, v);
+        v.push_back(root -> val);
+        preorder(root -> right, v);
+    }
+    vector<int> mergeLists(vector<int> v1, vector<int> v2){
+        int n1 = v1.size();
+        int n2 = v2.size();
+        vector<int> v;
+
+        int i = 0;
+        int j = 0;
+
+        while(i < n1 && j < n2){
+            if(v1[i] <= v2[j]){
+                v.push_back(v1[i]);
+                i++;
+            }
+            else{
+                v.push_back(v2[j]);
+                j++;
+            }
+        }
+        while(i < n1){
+            v.push_back(v1[i]);
+            i++;
+        }
+        while(j < n2){
+            v.push_back(v2[j]);
+            j++;
+        }
+
+        return v;
     }
     vector<int> getAllElements(TreeNode* root1, TreeNode* root2) {
-        multiset<int> mp;
-        inorder(root1, mp);
-        inorder(root2, mp);
-        vector<int> ans;
-        for(auto ele : mp){
-            ans.push_back(ele);
-        }
-        return ans;
+        vector<int> v1;
+        vector<int> v2;
+        preorder(root1, v1);
+        preorder(root2, v2);
+        return mergeLists(v1, v2);
     }
 };
