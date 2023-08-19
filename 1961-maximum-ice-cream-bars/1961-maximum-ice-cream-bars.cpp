@@ -3,15 +3,21 @@ public:
     int maxIceCream(vector<int>& costs, int coins) {
         sort(costs.begin(), costs.end());
         int cnt = 0;
-        for(int i = 0; i < costs.size(); i++){
-            if(costs[i] <= coins){
-                coins -= costs[i];
-                cnt++;
+        int sum = 0;
+        int n = costs.size();
+
+        for(int i = 0; i < n; i++){
+            sum += costs[i];
+            cnt++;
+
+            if(sum == coins){
+                return cnt;
             }
-            else{
-                break;
+            if(sum > coins){
+                return cnt - 1;
             }
         }
+
         return cnt;
     }
 };
