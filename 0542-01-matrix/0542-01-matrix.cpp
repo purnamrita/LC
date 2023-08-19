@@ -1,53 +1,50 @@
 class Solution {
 public:
-    bool isValid(int i, int j, int m, int n){
-        if(i < 0 || j < 0 || i >= m || j >= n){
-            return false;
-        }
-        return true;
+    bool checkValidBounds(int x, int y, int rows, int cols){
+        return (x >= 0 && x < rows && y >= 0 && y < cols);
     }
 
     vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
-        int m = mat.size();
-        int n = mat[0].size();
-        vector<vector<int>> ans(m, vector<int>(n, -1));
-        queue<pair<int, int>> q;
+        int n = mat.size();
+        int m = mat[0].size();
 
-        for(int i = 0; i < m; i++){
-            for(int j = 0; j < n; j++){
+        int delRow[] = {-1, 0, 1, 0};
+        int delCol[] = {0, 1, 0, -1};
+
+
+        vector<vector<int>> ans(n, vector<int>(m, 0));
+        vector<vector<int>> vis(n, vector<int>(m, 0));
+
+        queue<pair<pair<int, int>, int>> q;
+
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
                 if(mat[i][j] == 0){
-                    ans[i][j] = 0;
-                    q.push({i, j});
+                    vis[i][j] = 1;
+                    q.push({{i, j}, 0});
                 }
             }
         }
 
         while(!q.empty()){
-            int i = q.front().first;
-            int j = q.front().second;
-            if(ans[i][j] != -1){
-                if(isValid(i + 1, j, m, n) && ans[i + 1][j] == -1){
-                    ans[i + 1][j] = ans[i][j] + 1;
-                    q.push({i + 1, j});
-                }
-                if(isValid(i - 1, j, m, n) && ans[i - 1][j] == -1){
-                    ans[i - 1][j] = ans[i][j] + 1;
-                    q.push({i - 1, j});
-                }
-                if(isValid(i, j + 1, m, n) && ans[i][j + 1] == -1){
-                    ans[i][j + 1] = ans[i][j] + 1;
-                    q.push({i, j + 1});
-                }
-                if(isValid(i, j - 1, m, n) && ans[i][j - 1] == -1){
-                    ans[i][j - 1] = ans[i][j] + 1;
-                    q.push({i, j - 1});
+            auto it = q.front();
+            q.pop();
+            int row = it.first.first;
+            int col = it.first.second;
+            int dist = it.second;
+            ans[row][col] = dist;
+
+            for(int i = 0; i < 4; i++){
+                int newr = row + delRow[i];
+                int newc = col + delCol[i];
+
+                if(checkValidBounds(newr, newc, n, m) && !vis[newr][newc] && mat[newr][newc] == 1){
+                    q.push({{newr, newc}, dist + 1});
+                    vis[newr][newc] = 1;
                 }
             }
-            q.pop();
         }
 
         return ans;
-
-
     }
 };
