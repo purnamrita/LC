@@ -4,41 +4,42 @@ using namespace std;
 
 // } Driver Code Ends
 class Solution {
-private:
-    bool checkBipartite(int start, vector<int> &color, vector<int>adj[]){
+public:
+    bool helper(int startNode, vector<int> adj[], vector<int> &color){
         queue<int> q;
-        q.push(start);
-        color[start] = 1;
-        
-        while(!q.empty()){
-            int node = q.front();
-            q.pop();
-            
-            for(auto it : adj[node]){
-                if(color[it] == -1){
-                    color[it] = !color[node];
-                    q.push(it);
-                }
-                else{
-                    if(color[it] == color[node]){
-                        return false;
-                    }
-                }
-            }
-        }
-        
-        return true;
+	    q.push(startNode);
+	    color[startNode] = -1;
+	    
+	    while(!q.empty()){
+	        int node = q.front();
+	        q.pop();
+	        
+	        for(int n : adj[node]){
+	            if(color[n] == -1){
+	                color[n] = !color[node];
+	                q.push(n);
+	            }
+	            else{
+	                if(color[n] == color[node]){
+	                    return false;
+	                }
+	            }
+	        }
+	        
+	    }
+	    
+	    return true;
     }
     
-public:
+    
 	bool isBipartite(int V, vector<int>adj[]){
 	    vector<int> color(V, -1);
 	    
 	    for(int i = 0; i < V; i++){
 	        if(color[i] == -1){
-	            if(checkBipartite(i, color, adj) == false){
+	            if(helper(i, adj, color) == false){
 	                return false;
-	            };
+	            }
 	        }
 	    }
 	    
