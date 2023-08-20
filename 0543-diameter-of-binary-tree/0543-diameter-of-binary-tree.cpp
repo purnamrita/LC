@@ -15,13 +15,13 @@ public:
         if(root == NULL){
             return 0;
         }
-        int lh = helper(root -> left, ans);
-        int rh = helper(root -> right, ans);
-        ans = max(ans, lh + rh);
-        return 1 + max(lh, rh);
+        int leftHeight = helper(root -> left, ans);
+        int rightHeight = helper(root -> right, ans);
+        ans = max(ans, leftHeight + rightHeight);
+        return 1 + max(leftHeight, rightHeight);
     }
     int diameterOfBinaryTree(TreeNode* root) {
-        int ans = 0;
+        int ans = INT_MIN;
         helper(root, ans);
         return ans;
     }
