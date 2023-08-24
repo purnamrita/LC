@@ -10,28 +10,28 @@ class Solution
     //from the source vertex S.
     vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
     {
-        vector<int> dist(V, INT_MAX);
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minh;
+        vector<int> dist(V);
+        for(int i = 0; i < V; i++){
+            dist[i] = INT_MAX;
+        }
         dist[S] = 0;
         
-        set<pair<int, int>> s; // (dist, node)
-        s.insert({0, S});
+        minh.push({0, S});
         
-        while(!s.empty()){
-            auto it = *(s.begin());
-            int node = it.second;
-            int dis = it.first;
-            s.erase(it);
+        while(!minh.empty()){
+            auto itr = minh.top();
+            int dis = itr.first;
+            int node = itr.second;
+            minh.pop();
             
             for(auto it : adj[node]){
                 int adjNode = it[0];
-                int adjDist = it[1];
+                int edgeWt = it[1];
                 
-                if(dis +adjDist < dist[adjNode]){
-                    if(dist[adjNode] != INT_MAX){
-                        s.erase({dist[adjNode], adjNode});
-                    }
-                    dist[adjNode] = dis + adjDist;
-                    s.insert({dist[adjNode], adjNode});
+                if(dis + edgeWt < dist[adjNode]){
+                    dist[adjNode] = dis + edgeWt;
+                    minh.push({dist[adjNode], adjNode});
                 }
             }
         }
