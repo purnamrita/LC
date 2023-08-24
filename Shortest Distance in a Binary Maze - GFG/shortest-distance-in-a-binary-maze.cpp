@@ -9,50 +9,55 @@ using namespace std;
 // User function Template for C++
 
 class Solution {
+  private:
+    bool isValid(int row, int col, int n, int m){
+        return (row >= 0 && row < n && col >= 0 && col < m);
+    }
   public:
-    int shortestPath(vector<vector<int>> &grid, pair<int, int> source, pair<int, int> destination) {
+    int shortestPath(vector<vector<int>> &grid, pair<int, int> source,
+                     pair<int, int> destination) {
         
-        if(source.first == destination.first && source.second == destination.second){
+        if(source == destination){
             return 0;
         }
         
         int n = grid.size();
         int m = grid[0].size();
         
-        vector<vector<int>> dist(n, vector<int>(m, INT_MAX));
-        dist[source.first][source.second] = 0;
+        vector<vector<int>> vis(n, vector<int>(m, 0));
+        vector<vector<int>> distance(n, vector<int>(m, INT_MAX));
+        distance[source.first][source.second] = 0;
         
         queue<pair<int, pair<int, int>>> q;
         q.push({0, {source.first, source.second}});
+        vis[source.first][source.second] = 1;
         
         int delRow[] = {-1, 0, 1, 0};
         int delCol[] = {0, 1, 0, -1};
         
         while(!q.empty()){
-            int dis = q.front().first;
             int row = q.front().second.first;
             int col = q.front().second.second;
+            int dist = q.front().first;
             q.pop();
             
             for(int i = 0; i < 4; i++){
                 int nrow = row + delRow[i];
                 int ncol = col + delCol[i];
-                
-                if(nrow >= 0 && nrow < n && ncol >= 0 && ncol < m && grid[nrow][ncol] == 1 && dis + 1 < dist[nrow][ncol]){
-                    dist[nrow][ncol] = dis + 1;
-                    q.push({dis + 1, {nrow, ncol}});
-                    
-                    if(nrow == destination.first && ncol == destination.second){
-                        return dis + 1;
+                if(isValid(nrow, ncol, n, m) && grid[nrow][ncol] == 1){
+                    if(dist + 1 < distance[nrow][ncol]){
+                        distance[nrow][ncol] = dist + 1;
+                        if(nrow == destination.first && ncol == destination.second){
+                            return distance[nrow][ncol];
+                        }
+                        q.push({distance[nrow][ncol], {nrow, ncol}});
                     }
                 }
-                
             }
             
         }
         
         return -1;
-        
     }
 };
 
