@@ -11,35 +11,34 @@ class Solution {
         for(int i = 0; i < m; i++){
             int u = edges[i][0];
             int v = edges[i][1];
-            int wt = edges[i][2];
-            
-            adj[u].push_back({v, wt});
-            adj[v].push_back({u, wt});
+            int dist = edges[i][2];
+            adj[u].push_back({v, dist});
+            adj[v].push_back({u, dist});
         }
         
         vector<int> dist(n + 1, INT_MAX);
-        dist[1] = 0;
-        
         vector<int> parent(n + 1);
         for(int i = 1; i <= n; i++){
             parent[i] = i;
         }
         
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        dist[1] = 0;
         
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
         pq.push({0, 1});
         
         while(!pq.empty()){
-            int node = pq.top().second;
-            int dis = pq.top().first;
+            auto itr = pq.top();
             pq.pop();
+            int distance = itr.first;
+            int node = itr.second;
             
             for(auto it : adj[node]){
                 int adjNode = it.first;
-                int adjWt = it.second;
+                int edgeWt = it.second;
                 
-                if(dis + adjWt < dist[adjNode]){
-                    dist[adjNode] = dis + adjWt;
+                if(distance + edgeWt < dist[adjNode]){
+                    dist[adjNode] = distance + edgeWt;
                     pq.push({dist[adjNode], adjNode});
                     parent[adjNode] = node;
                 }
@@ -49,21 +48,16 @@ class Solution {
         if(dist[n] == INT_MAX){
             return {-1};
         }
-        
         vector<int> path;
+        path.push_back(n);
+        int currNode = n;
         
-        int node = n;
-        
-        while(parent[node] != node){
-            path.push_back(node);
-            node = parent[node];
+        while(parent[currNode] != currNode){
+            path.push_back(parent[currNode]);
+            currNode = parent[currNode];
         }
-        
-        path.push_back(1);
         reverse(path.begin(), path.end());
-        
         return path;
-        
     }
 };
 
