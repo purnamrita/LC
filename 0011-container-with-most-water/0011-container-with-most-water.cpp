@@ -7,8 +7,7 @@ public:
         int ans = 0;
 
         while(l < r){
-            int area = min(height[l], height[r]) * (r - l);
-            ans = max(ans, area);
+            ans = max(ans, (r - l) * (min(height[l], height[r])));
             if(height[l] < height[r]){
                 l++;
             }
