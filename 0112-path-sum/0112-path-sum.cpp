@@ -11,7 +11,7 @@
  */
 class Solution {
 public:
-    bool helper(TreeNode* root, int targetSum, int sum){
+    bool hasPathSumHelper(TreeNode* root, int targetSum, int &sum){
         if(root == NULL){
             return false;
         }
@@ -19,20 +19,21 @@ public:
         if(root -> left == NULL && root -> right == NULL && sum == targetSum){
             return true;
         }
-        int left = helper(root -> left, targetSum, sum);
-        if(left){
+        if(hasPathSumHelper(root -> left, targetSum, sum) == true){
             return true;
         }
-        int right = helper(root -> right, targetSum, sum);
-        if(right){
+        if(hasPathSumHelper(root -> right, targetSum, sum) == true){
             return true;
         }
+        sum -= root -> val;
         return false;
     }
+
     bool hasPathSum(TreeNode* root, int targetSum) {
         if(root == NULL){
             return false;
         }
-        return helper(root, targetSum, 0);
+        int sum = 0;
+        return hasPathSumHelper(root, targetSum, sum);
     }
 };
