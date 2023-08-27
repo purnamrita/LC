@@ -11,28 +11,29 @@
  */
 class Solution {
 public:
-    void helper(TreeNode* root, int targetSum, unordered_map<long long, int> &mp, long long sum, int &cnt){
+    void pathSumHelper(TreeNode* root, int targetSum, long long &sum, unordered_map<long long, int> &mp, int &ans){
         if(root == NULL){
             return;
         }
         sum += root -> val;
         if(mp.find(sum - targetSum) != mp.end()){
-            cnt += mp[sum - targetSum];
+            ans += mp[sum - targetSum];
         }
         mp[sum]++;
-        helper(root -> left, targetSum, mp, sum, cnt);
-        helper(root -> right, targetSum, mp, sum, cnt);
+        pathSumHelper(root -> left, targetSum, sum, mp, ans);
+        pathSumHelper(root -> right, targetSum, sum, mp, ans);
         mp[sum]--;
-        sum -= root -> val;
         if(mp[sum] == 0){
             mp.erase(sum);
         }
+        sum -= root -> val;
     }
     int pathSum(TreeNode* root, int targetSum) {
+        long long sum = 0;
         unordered_map<long long, int> mp;
-        mp[0]++;
-        int cnt = 0;
-        helper(root, targetSum, mp, 0, cnt);
-        return cnt;
+        mp[0] = 1;
+        int ans = 0;
+        pathSumHelper(root, targetSum, sum, mp, ans);
+        return ans;
     }
 };
