@@ -8,7 +8,7 @@ public:
             if(minh.size() > k){
                 minh.pop();
             }
-        } 
+        }
 
         return minh.top();
     }
