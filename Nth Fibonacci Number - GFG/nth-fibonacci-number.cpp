@@ -8,16 +8,17 @@ using namespace std;
 class Solution {
   public:
     int nthFibonacci(int n){
-        // Tabulation
-        vector<int> dp(n + 1);
-        dp[0] = 0;
-        dp[1] = 1;
+        int prev2 = 0;
+        int prev = 1;
+        int curri;
         
         for(int i = 2; i <= n; i++){
-            dp[i] = (dp[i - 1] + dp[i - 2]) % 1000000007;
+            curri = (prev2 + prev) % 1000000007;
+            prev2 = prev;
+            prev = curri;
         }
         
-        return dp[n] % 1000000007;
+        return prev;
     }
 };
 
