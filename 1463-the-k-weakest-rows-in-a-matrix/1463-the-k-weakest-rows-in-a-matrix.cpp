@@ -32,23 +32,23 @@ public:
     }
 
     vector<int> kWeakestRows(vector<vector<int>>& mat, int k) {
-        vector<pair<int, int>> vStore; // (no of soldiers, row no)
 
+        priority_queue<pair<int, int>> maxh;
         for(int i = 0; i < mat.size(); i++){
-            vStore.push_back({findNoOfOnes(mat[i]), i});
+            maxh.push({findNoOfOnes(mat[i]), i});
+            if(maxh.size() > k){
+                maxh.pop();
+            }
         }
-        sort(vStore.begin(), vStore.end(), comp);
+
 
         vector<int> ans;
-        for(auto it : vStore){
-            if(k > 0){
-                ans.push_back(it.second);
-                k--;
-            }
-            else{
-                break;
-            }
+        while(!maxh.empty()){
+            auto it = maxh.top();
+            maxh.pop();
+            ans.push_back(it.second);
         }
+        reverse(ans.begin(), ans.end());
         return ans;
     }
 };
