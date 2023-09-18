@@ -10,35 +10,29 @@ class Solution
     //from the source vertex S.
     vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
     {
-        set<pair<int, int>> st; // (dist, node)
-        vector<int> distance(V);
-        for(int i = 0; i < V; i++){
-            distance[i] = INT_MAX;
-        }
-        distance[S] = 0;
-        st.insert({0, S});
+        vector<int> dist(V, INT_MAX);
+        dist[S] = 0;
         
-        while(!st.empty()){
-            auto itr = *(st.begin());
-            int node = itr.second;
-            int dist = itr.first;
-            st.erase(itr);
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        pq.push({0, S}); // (dist, node)
+        
+        while(!pq.empty()){
+            int node = pq.top().second;
+            int distance = pq.top().first;
+            pq.pop();
             
-            for(auto it : adj[node]){
-                int adjNode = it[0];
-                int edgeWt = it[1];
+            for(auto n : adj[node]){
+                int adjWt = n[1];
+                int adjNode = n[0];
                 
-                if(dist + edgeWt < distance[adjNode]){
-                    if(distance[adjNode] != INT_MAX){
-                        st.erase({distance[adjNode], adjNode});
-                    }
-                    distance[adjNode] = dist + edgeWt;
-                    st.insert({distance[adjNode], adjNode});
+                if(dist[node] + adjWt < dist[adjNode]){
+                    dist[adjNode] = dist[node] + adjWt;
+                    pq.push({dist[adjNode], adjNode});
                 }
             }
         }
         
-        return distance;
+        return dist;
     }
 };
 
