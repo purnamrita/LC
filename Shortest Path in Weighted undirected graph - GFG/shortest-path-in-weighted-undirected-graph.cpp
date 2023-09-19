@@ -8,54 +8,55 @@ class Solution {
     vector<int> shortestPath(int n, int m, vector<vector<int>>& edges) {
         vector<pair<int, int>> adj[n + 1];
         
-        for(int i = 0; i < m; i++){
-            int u = edges[i][0];
-            int v = edges[i][1];
-            int dist = edges[i][2];
-            adj[u].push_back({v, dist});
-            adj[v].push_back({u, dist});
+        for(auto it : edges){
+            int u = it[0];
+            int v = it[1];
+            int wt = it[2];
+            
+            adj[u].push_back({v, wt});
+            adj[v].push_back({u, wt});
         }
         
-        vector<int> dist(n + 1, INT_MAX);
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq; // minheap
+        
+        vector<int> dist(n + 1, 1e9);
         vector<int> parent(n + 1);
-        for(int i = 1; i <= n; i++){
-            parent[i] = i;
-        }
         
+        parent[1] = 1;
         dist[1] = 0;
         
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
         pq.push({0, 1});
         
         while(!pq.empty()){
-            auto itr = pq.top();
+            auto it =  pq.top();
+            int node = it.second;
             pq.pop();
-            int distance = itr.first;
-            int node = itr.second;
             
-            for(auto it : adj[node]){
-                int adjNode = it.first;
-                int edgeWt = it.second;
+            for(auto adjIt : adj[node]){
+                int adjNode = adjIt.first;
+                int edgeWt = adjIt.second;
                 
-                if(distance + edgeWt < dist[adjNode]){
-                    dist[adjNode] = distance + edgeWt;
-                    pq.push({dist[adjNode], adjNode});
+                if(dist[node] + edgeWt < dist[adjNode]){
+                    dist[adjNode] = dist[node] + edgeWt;
                     parent[adjNode] = node;
+                    pq.push({dist[adjNode], adjNode});
                 }
             }
         }
         
-        if(dist[n] == INT_MAX){
+        if(dist[n] == 1e9){
             return {-1};
         }
-        vector<int> path;
-        path.push_back(n);
-        int currNode = n;
         
-        while(parent[currNode] != currNode){
-            path.push_back(parent[currNode]);
-            currNode = parent[currNode];
+        vector<int> path;
+        int node = n;
+        
+        while(parent[node] != node){
+            path.push_back(node);
+            node = parent[node];
         }
+        
+        path.push_back(1);
         reverse(path.begin(), path.end());
         return path;
     }
