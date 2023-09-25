@@ -3,10 +3,10 @@ public:
     char findTheDifference(string s, string t) {
         int ans = 0;
         for(char ch : s){
-            ans ^= ch;
+            ans -= ch;
         }
         for(char ch : t){
-            ans ^= ch;
+            ans += ch;
         }
         return ans;
     }
