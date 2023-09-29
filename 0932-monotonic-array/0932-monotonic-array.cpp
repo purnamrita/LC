@@ -3,29 +3,16 @@ public:
     bool isMonotonic(vector<int>& nums) {
         int n = nums.size();
 
-        if(n == 1){
-            return true;
-        }
-
-        bool inc = true;
-        bool dec = true;
-
-        for(int i = 1; i < n; i++){
-            if(nums[i] < nums[i - 1]){
-                inc = false;
-                break;
-            }
-        }
-        if(inc == true){
-            return true;
+        if(nums[n - 1] - nums[0] < 0){
+            reverse(nums.begin(), nums.end());
         }
 
         for(int i = 1; i < n; i++){
-            if(nums[i] > nums[i - 1]){
-                dec = false;
-                break;
+            if(nums[i] - nums[i - 1] < 0){
+                return false;
             }
         }
-        return dec;
+
+        return true;
     }
 };
