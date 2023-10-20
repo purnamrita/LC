@@ -9,29 +9,29 @@ using namespace std;
 
 class Solution{   
 public:
-    int helper(int idx, int target, vector<int> arr, vector<vector<int>> &dp){
-        if(target == 0){
-            return dp[idx][target] = true;
-        }
-        if(idx == 0){
-            return (target == arr[0]);
-        }
-        if(dp[idx][target] != -1){
-            return dp[idx][target];
-        }
-        bool not_pick = helper(idx - 1, target, arr, dp);
-        bool pick = false;
-        if(arr[idx] <= target){
-            pick = helper(idx - 1, target - arr[idx], arr, dp);
-        }
-        return dp[idx][target] = pick || not_pick;
-    }
-    
     bool isSubsetSum(vector<int>arr, int sum){
         int n = arr.size();
-        vector<vector<int>> dp(n, vector<int>(sum + 1, -1));
-        return helper(n - 1, sum, arr, dp);
+        vector<vector<bool>> dp(n, vector<bool>(sum + 1, false));
         
+        for(int row = 0; row < n; row++){
+            dp[row][0] = true; 
+        }
+        if(arr[0] <= sum){
+            dp[0][arr[0]] = true;
+        }
+        
+        for(int row = 1; row < n; row++){
+            for(int target = 1; target <= sum; target++){
+                bool not_pick = dp[row - 1][target];
+                bool pick = false;
+                if(arr[row] <= target){
+                    pick = dp[row - 1][target - arr[row]];
+                }
+                dp[row][target] = pick || not_pick;
+            }
+        }
+        
+        return dp[n - 1][sum];
     }
 };
 
