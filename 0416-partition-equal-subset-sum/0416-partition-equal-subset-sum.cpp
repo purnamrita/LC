@@ -15,25 +15,25 @@ public:
         int target = sum / 2;
 
         vector<vector<bool>> dp(n, vector<bool>(target + 1, false));
-
-        for(int row = 0; row < n; row++){
-            dp[row][0] = true;
-        }
+        vector<bool> prev(target + 1, false);
         if(nums[0] <= target){
-            dp[0][nums[0]] = true;
+            prev[nums[0]] = true;
         }
 
         for(int row = 1; row < n; row++){
+            vector<bool> curr(target + 1, false);
+            curr[0] = true;
             for(int tar = 1; tar <= target; tar++){
-                bool not_pick = dp[row - 1][tar];
+                bool not_pick = prev[tar];
                 bool pick = false;
                 if(nums[row] <= tar){
-                    pick = dp[row - 1][tar - nums[row]];
+                    pick = prev[tar - nums[row]];
                 }
-                dp[row][tar] = pick || not_pick;
+                curr[tar] = pick || not_pick;
             }
+            prev = curr;
         }
 
-        return dp[n - 1][target];
+        return prev[target];
     }
 };
