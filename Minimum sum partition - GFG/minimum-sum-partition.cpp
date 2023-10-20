@@ -7,9 +7,7 @@ class Solution{
 
   public:
 	int minDifference(int arr[], int n)  { 
-	    if(n == 1){
-	        return arr[0];
-	    }
+
 	    int totSum = 0;
 	    for(int i = 0; i < n; i++){
 	        totSum += arr[i];
