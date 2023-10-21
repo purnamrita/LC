@@ -4,30 +4,34 @@ public:
         int n = coins.size();
         vector<vector<int>> dp(n, vector<int>(amount + 1, 0));
 
+        vector<int> prev(amount + 1, 0);
+
         for(int amt = 0; amt <= amount; amt++){
             if(amt % coins[0] == 0){
-                dp[0][amt] = amt / coins[0];
+                prev[amt] = amt / coins[0];
             }
             else{
-                dp[0][amt] = 1e9;
+                prev[amt] = 1e9;
             }
         }
 
         for(int idx = 1; idx < n; idx++){
+            vector<int> curr(amount + 1, 0);
             for(int amt = 0; amt <= amount; amt++){
-                int notPick = 0 + dp[idx - 1][amt];
+                int notPick = 0 + prev[amt];
                 int pick = INT_MAX;
                 if(coins[idx] <= amt){
-                    pick = 1 + dp[idx][amt - coins[idx]];
+                    pick = 1 + curr[amt - coins[idx]];
                 }
-                dp[idx][amt] = min(pick, notPick);
+                curr[amt] = min(pick, notPick);
             }
+            prev = curr;
 
         }
 
-        if(dp[n - 1][amount] == 1e9){
+        if(prev[amount] == 1e9){
             return -1;
         }
-        return dp[n - 1][amount];
+        return prev[amount];
     }
 };
