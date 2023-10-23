@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int helper(string s, string t, int idx1, int idx2, vector<vector<int>> &dp){
+    int helper(string &s, string &t, int idx1, int idx2, vector<vector<int>> &dp){
         if(idx2 < 0){
             return 1;
         }
