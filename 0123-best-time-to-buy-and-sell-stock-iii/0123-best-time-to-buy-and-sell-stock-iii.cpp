@@ -4,25 +4,29 @@ public:
         int n = prices.size();
         vector<vector<int>> dp(n + 1, vector<int>(5, 0));
 
+        vector<int> after(5, 0);
+
         for(int idx = n - 1; idx >= 0; idx--){
+            vector<int> curr(5, 0);
             for(int trans = 3; trans >= 0; trans--){
                 if(trans % 2 == 0){
                     //buy
-                    dp[idx][trans] = max(
-                        -prices[idx] + dp[idx + 1][trans + 1],
-                        dp[idx + 1][trans]
+                    curr[trans] = max(
+                        -prices[idx] + after[trans + 1],
+                        after[trans]
                     );
                 }
                 else{
                     //sell
-                    dp[idx][trans] = max(
-                        prices[idx] + dp[idx + 1][trans + 1],
-                        dp[idx + 1][trans]
+                    curr[trans] = max(
+                        prices[idx] + after[trans + 1],
+                        after[trans]
                     );
                 }
             }
+            after = curr;
         }
 
-        return dp[0][0];
+        return after[0];
     }
 };
