@@ -7,12 +7,18 @@ public:
         if(n == 1 || n == 2){
             return 1;
         }
-        vector<int> dp(n + 1, 0);
-        dp[0] = 0;
-        dp[1] = dp[2] = 1;
+        int prevvv = 0;
+        int prevv = 1;
+        int prev = 1;
+        int curr;
+        
         for(int i = 3; i <= n; i++){
-            dp[i] = dp[i - 1] + dp[i - 2] + dp[i - 3];
+            curr = prevvv + prevv + prev;
+            prevvv = prevv;
+            prevv = prev;
+            prev = curr;
         }
-        return dp[n];
+
+        return curr;
     }
 };
