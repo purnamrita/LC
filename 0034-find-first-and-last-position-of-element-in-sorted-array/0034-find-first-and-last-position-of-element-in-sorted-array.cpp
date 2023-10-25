@@ -1,53 +1,26 @@
 class Solution {
 public:
-    int firstIdx(vector<int>& nums, int target){
-        int l = 0;
-        int r = nums.size() - 1;
-        int ans = -1;
-
-        while(l <= r){
-            int m = l + (r - l) / 2;
-            if(nums[m] == target){
-                ans = m;
-                r = m - 1;
-            }
-            else if(nums[m] > target){
-                r = m - 1;
-            }
-            else{
-                l = m + 1;
-            }
+    int firstOcc(vector<int>& nums, int target){
+        int n = nums.size();
+        int idx = lower_bound(nums.begin(), nums.end(), target) - nums.begin();
+        if(idx != n && nums[idx] == target){
+            return idx;
         }
-
-        return ans;
+        return -1;
     }
+    int lastOcc(vector<int>& nums, int target){
+        int n = nums.size();
+        int idx = upper_bound(nums.begin(), nums.end(), target) - nums.begin();
 
-    int lastIdx(vector<int>& nums, int target){
-        int l = 0;
-        int r = nums.size() - 1;
-        int ans = -1;
-
-        while(l <= r){
-            int m = l + (r - l) / 2;
-            if(nums[m] == target){
-                ans = m;
-                l = m + 1;
-            }
-            else if(nums[m] > target){
-                r = m - 1;
-            }
-            else{
-                l = m + 1;
-            }
+        if(idx > 0 && nums[idx - 1] == target){
+            return idx - 1;
         }
-
-        return ans;
+        return -1;
     }
-
     vector<int> searchRange(vector<int>& nums, int target) {
-        vector<int> ans;
-        ans.push_back(firstIdx(nums, target));
-        ans.push_back(lastIdx(nums, target));
+        vector<int> ans(2);
+        ans[0] = firstOcc(nums, target);
+        ans[1] = lastOcc(nums, target);
         return ans;
     }
 };
