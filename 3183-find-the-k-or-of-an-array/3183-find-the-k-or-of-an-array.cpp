@@ -7,7 +7,7 @@ public:
         for(int bit = 0; bit < 32; bit++){
             int cnt = 0;
             for(int num : nums){
-                if((num & (1 << bit)) == pow(2, bit)){
+                if((num & (1 << bit)) != 0){
                     cnt++;
                 }
             }
