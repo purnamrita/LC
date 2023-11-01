@@ -19,17 +19,20 @@ public:
         maxi = max(maxi, mp[root -> val]);
         preorder(root -> left, mp, maxi);
         preorder(root -> right, mp, maxi);
+        
     }
     vector<int> findMode(TreeNode* root) {
         vector<int> ans;
         map<int, int> mp;
         int maxi = 0;
         preorder(root, mp, maxi);
+
         for(auto it : mp){
             if(it.second == maxi){
                 ans.push_back(it.first);
             }
         }
+
         return ans;
     }
 };
