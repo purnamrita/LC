@@ -2,27 +2,24 @@ class Solution {
 public:
     int findChampion(vector<vector<int>>& grid) {
         int n = grid.size();
-
         unordered_set<int> s;
-        for(int i = 0; i < n; i++){
-            s.insert(i);
+        for(int ele = 0; ele < n; ele++){
+            s.insert(ele);
         }
 
         for(int i = 0; i < n; i++){
             for(int j = 0; j < n; j++){
-                if(i != j){
-                    if(grid[i][j] == 1){
-                        s.erase(j);
-                    }
-                    else{
-                        s.erase(i);
-                    }
+                if(grid[i][j] == 1){
+                    s.erase(j);
                 }
             }
         }
 
-        for(auto it : s){
-            return it;
+        if(s.size() != 1){
+            return -1;
+        }
+        for(auto ele : s){
+            return ele;
         }
         return -1;
     }
