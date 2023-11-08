@@ -16,7 +16,7 @@ public:
         if(dp[i][j] != -1){
             return dp[i][j];
         }
-        int mini = 1e9;
+        int mini = INT_MAX;
         for(int k = i; k < j; k++){
             int steps = arr[i - 1] * arr[k] * arr[j] + helper(i, k, arr, dp) + helper(k + 1, j, arr, dp);
             mini = min(mini, steps);
